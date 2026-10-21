@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autonomous Job Hunting Agent — LangGraph Command Center</title>
+  <meta name="description" content="Production-grade autonomous job hunting dashboard powered by LangGraph StateGraph, multi-brain AI orchestration, and stealth browser automation.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <!-- Top Navigation / Header -->
+  <header class="app-header" id="app-header">
+    <div class="header-left">
+      <div class="brand-logo">
+        <div class="logo-icon-pulse"></div>
+        <span class="logo-icon">🎯</span>
+      </div>
+      <div>
+        <h1 class="brand-title">JOB AGENT <span class="badge-v2">v2.0 LangGraph</span></h1>
+        <p class="brand-subtitle">Autonomous AI Job Hunter • Stealth Automation • SQLite Persistence</p>
+      </div>
+    </div>
+
+    <!-- Live System Health Badges -->
+    <div class="header-right">
+      <div class="health-pill" id="pill-ollama" title="Local Ollama AI Brain">
+        <span class="pill-dot"></span>
+        <span class="pill-label">Ollama</span>
+        <span class="pill-val" id="val-ollama">Checking...</span>
+      </div>
+      <div class="health-pill" id="pill-gemini" title="Google Gemini Free Tier">
+        <span class="pill-dot"></span>
+        <span class="pill-label">Gemini</span>
+        <span class="pill-val" id="val-gemini">Checking...</span>
+      </div>
+      <div class="health-pill" id="pill-browser" title="Stealth Chromium Anti-Detection">
+        <span class="pill-dot"></span>
+        <span class="pill-label">Browser</span>
+        <span class="pill-val" id="val-browser">Checking...</span>
+      </div>
+      <div class="health-pill" id="pill-session" title="Execution State">
+        <span class="pill-dot pulse"></span>
+        <span class="pill-label">Agent</span>
+        <span class="pill-val" id="val-session-status">IDLE</span>
+      </div>
+      <button class="btn-primary" id="btn-header-start" onclick="openStartModal()">
+        <span class="btn-icon">⚡</span> Run Cycle
+      </button>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav class="nav-tabs" id="nav-tabs">
+    <button class="tab-btn active" id="tab-btn-pipeline" onclick="switchTab('pipeline')">
+      <span class="tab-icon">🔄</span> StateGraph Pipeline
+    </button>
+    <button class="tab-btn" id="tab-btn-ats" onclick="switchTab('ats')">
+      <span class="tab-icon">🎯</span> ATS Optimizer Studio
+    </button>
+    <button class="tab-btn" id="tab-btn-checkpoints" onclick="switchTab('checkpoints')">
+      <span class="tab-icon">💾</span> Checkpoints & Threads
+    </button>
+    <button class="tab-btn" id="tab-btn-safety" onclick="switchTab('safety')">
+      <span class="tab-icon">🛡️</span> Anti-Ban Safety
+    </button>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="main-layout">
+
+    <!-- TAB 1: PIPELINE & MONITORING -->
+    <section class="tab-pane active" id="pane-pipeline">
+      <!-- StateGraph Pipeline Visualizer Card -->
+      <div class="card graph-card" id="card-stategraph">
+        <div class="card-header">
+          <div class="card-title-group">
+            <h2 class="card-title">LangGraph StateGraph Visualizer</h2>
+            <span class="card-caption">Real-time state transitions and conditional routing</span>
+          </div>
+          <div class="graph-legend">
+            <span class="legend-item"><span class="legend-dot idle"></span> Idle</span>
+            <span class="legend-item"><span class="legend-dot active"></span> Active Node</span>
+            <span class="legend-item"><span class="legend-dot done"></span> Completed</span>
+            <span class="legend-item"><span class="legend-dot hitl"></span> HITL Pause</span>
+          </div>
+        </div>
+
+        <!-- Visual Node Chain -->
+        <div class="stategraph-chain" id="stategraph-chain">
+          <div class="node-wrapper" id="wrap-health_check">
+            <div class="graph-node" id="node-health_check" data-name="Health Check">
+              <span class="node-icon">🩺</span>
+              <span class="node-title">Health Check</span>
+              <span class="node-sub">Ollama & Gemini</span>
+            </div>
+            <div class="node-connector"></div>
+          </div>
+
+          <div class="node-wrapper" id="wrap-scrape_jobs">
+            <div class="graph-node" id="node-scrape_jobs" data-name="Job Discovery">
+              <span class="node-icon">🔍</span>
+              <span class="node-title">Job Discovery</span>
+              <span class="node-sub">LinkedIn + External</span>
+            </div>
+            <div class="node-connector"></div>
+          </div>
+
+          <div class="node-wrapper" id="wrap-jd_prescreen">
+            <div class="graph-node" id="node-jd_prescreen" data-name="JD Pre-Screen">
+              <span class="node-icon">🧠</span>
+              <span class="node-title">JD Pre-Screen</span>
+              <span class="node-sub">Experience + Relevance</span>
+            </div>
+            <div class="node-connector"></div>
+          </div>
+
+          <div class="node-wrapper" id="wrap-ats_scorer">
+            <div class="graph-node" id="node-ats_scorer" data-name="ATS Scorer">
+              <span class="node-icon">🎯</span>
+              <span class="node-title">ATS Matcher</span>
+              <span class="node-sub">Token Overlap</span>
+            </div>
+            <div class="node-connector"></div>
+          </div>
+
+          <div class="node-wrapper" id="wrap-resume_tailor">
+            <div class="graph-node" id="node-resume_tailor" data-name="Resume Tailoring">
+              <span class="node-icon">✨</span>
+              <span class="node-title">AI Tailor</span>
+              <span class="node-sub">STAR Bullets + PDF</span>
+            </div>
+            <div class="node-connector"></div>
+          </div>
+
+          <div class="node-wrapper" id="wrap-safety_check">
+            <div class="graph-node" id="node-safety_check" data-name="Safety Guard">
+              <span class="node-icon">🛡️</span>
+              <span class="node-title">Safety Check</span>
+              <span class="node-sub">Daily Cap Anti-Ban</span>
+            </div>
+            <div class="node-connector"></div>
+          </div>
+
+          <div class="node-wrapper" id="wrap-apply_job">
+            <div class="graph-node hitl-node" id="node-apply_job" data-name="Stealth Apply">
+              <span class="node-icon">🧑</span>
+              <span class="node-title">HITL / Apply</span>
+              <span class="node-sub">Human Review</span>
+            </div>
+            <div class="node-connector"></div>
+          </div>
+
+          <div class="node-wrapper" id="wrap-log_result">
+            <div class="graph-node" id="node-log_result" data-name="Audit & Pacing">
+              <span class="node-icon">⏳</span>
+              <span class="node-title">Log & Delay</span>
+              <span class="node-sub">45-90s Pacing</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Two-Column Status Grid -->
+      <div class="dashboard-grid">
+        <!-- Active Job Card / HITL Approval Banner -->
+        <div class="card active-job-card" id="card-active-job">
+          <div class="card-header">
+            <h3 class="card-title">Current Pipeline Target</h3>
+            <span class="status-tag tag-idle" id="tag-job-status">IDLE</span>
+          </div>
+          
+          <div class="job-display-body" id="job-display-body">
+            <div class="empty-state" id="job-empty-state">
+              <span class="empty-icon">⏳</span>
+              <p class="empty-title">No Active Job In Progress</p>
+              <p class="empty-desc">Start a supervised batch or headless cycle to begin autonomous job hunting.</p>
+              <button class="btn-accent" id="btn-quick-start" onclick="openStartModal()">Launch First Batch</button>
+            </div>
+
+            <div class="job-details-content hidden" id="job-details-content">
+              <div class="job-meta-header">
+                <div>
+                  <h4 class="job-title-text" id="disp-job-title">Software Engineer</h4>
+                  <p class="job-company-text" id="disp-job-company">Company Name • Remote</p>
+                </div>
+                <div class="score-badge-circle" id="disp-score-badge">
+                  <span class="score-val" id="disp-score-num">--%</span>
+                  <span class="score-lbl">ATS</span>
+                </div>
+              </div>
+
+              <div class="keyword-section">
+                <span class="kw-label">Matched Skills:</span>
+                <div class="chip-container" id="disp-matched-chips"></div>
+              </div>
+
+              <div class="keyword-section">
+                <span class="kw-label">Missing Skills Addressed:</span>
+                <div class="chip-container" id="disp-missing-chips"></div>
+              </div>
+
+              <!-- HITL Interactive Action Banner -->
+              <div class="hitl-banner hidden" id="hitl-banner">
+                <div class="hitl-meta-row">
+                  <span class="apply-type-badge" id="disp-apply-type">🟢 Easy Apply</span>
+                  <span class="experience-badge" id="disp-experience">✅ 0-2 yrs</span>
+                  <a class="job-profile-link" id="disp-job-link" href="#" target="_blank" rel="noopener">🔗 View on LinkedIn</a>
+                </div>
+
+                <div class="jd-summary-panel" id="jd-summary-panel">
+                  <span class="jd-summary-label">📝 Summary:</span>
+                  <p class="jd-summary-text" id="disp-jd-summary">Loading summary...</p>
+                </div>
+
+                <div class="hitl-external-links hidden" id="hitl-external-links">
+                  <a class="external-portal-link" id="disp-external-link" href="#" target="_blank" rel="noopener">🔗 Apply on company portal</a>
+                </div>
+
+                <div class="hitl-banner-text">
+                  <strong>🧑 Action Required:</strong> Human-in-the-Loop review. Verify posting before submitting.
+                </div>
+                <div class="hitl-actions">
+                  <button class="btn-success" id="btn-approve-submit" onclick="submitApproval('approve')">
+                    ✅ Approve & Submit
+                  </button>
+                  <button class="btn-whatsapp" id="btn-send-whatsapp" onclick="submitApproval('whatsapp')">
+                    📲 Send to WhatsApp Group
+                  </button>
+                  <button class="btn-both" id="btn-both-apply-whatsapp" onclick="submitApproval('both')">
+                    🚀 Both (Apply & Send)
+                  </button>
+                  <button class="btn-secondary" id="btn-skip-job" onclick="submitApproval('skip')">
+                    ⏭️ Skip Listing
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Daily Safety & Anti-Ban Gauge Card -->
+        <div class="card safety-card" id="card-daily-safety">
+          <div class="card-header">
+            <h3 class="card-title">Anti-Ban Protection Center</h3>
+            <span class="status-tag tag-safe" id="tag-safety-status">SHIELD ACTIVE</span>
+          </div>
+
+          <div class="safety-meters-grid">
+            <!-- LinkedIn Circular SVG Progress Gauge -->
+            <div class="gauge-box">
+              <div class="svg-gauge-wrapper">
+                <svg class="progress-ring" width="110" height="110">
+                  <circle class="ring-bg" stroke="rgba(255,255,255,0.08)" stroke-width="8" fill="transparent" r="46" cx="55" cy="55"/>
+                  <circle class="ring-progress" id="ring-linkedin" stroke="#06b6d4" stroke-width="8" stroke-dasharray="289" stroke-dashoffset="289" stroke-linecap="round" fill="transparent" r="46" cx="55" cy="55"/>
+                </svg>
+                <div class="gauge-center-text">
+                  <span class="gauge-num" id="gauge-li-val">0</span>
+                  <span class="gauge-max" id="gauge-li-max">/ 40</span>
+                </div>
+              </div>
+              <span class="gauge-platform">LinkedIn Applications</span>
+              <span class="gauge-limit">Safe Daily Limit: 40</span>
+            </div>
+
+            <!-- Stats Mini List -->
+            <div class="safety-stat-list">
+              <div class="safety-stat-row">
+                <span class="stat-name">Pacing Delay</span>
+                <span class="stat-val highlight" id="disp-delay-range">45 – 90s</span>
+              </div>
+              <div class="safety-stat-row">
+                <span class="stat-name">Browser Profile</span>
+                <span class="stat-val" id="disp-profile-status">Persistent</span>
+              </div>
+              <div class="safety-stat-row">
+                <span class="stat-name">Active Brain</span>
+                <span class="stat-val" id="disp-brain-name">Gemini + Ollama</span>
+              </div>
+              <div class="safety-stat-row">
+                <span class="stat-name">Autopilot Scheduler</span>
+                <span class="stat-val" id="disp-scheduler-status">Every 3 Hours</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Activity Stream Console -->
+      <div class="card terminal-card" id="card-activity-terminal">
+        <div class="card-header">
+          <div class="card-title-group">
+            <h3 class="card-title">Live Activity & SSE Event Stream</h3>
+            <span class="card-caption">Real-time trace logs streamed directly from LangGraph nodes</span>
+          </div>
+          <div class="terminal-actions">
+            <button class="btn-ghost" id="btn-clear-terminal" onclick="clearTerminal()">Clear</button>
+            <span class="live-dot-indicator">● LIVE</span>
+          </div>
+        </div>
+        <div class="terminal-body" id="terminal-body">
+          <div class="terminal-line system">[SYSTEM] Event stream initialized. Connected to LangGraph engine.</div>
+        </div>
+      </div>
+
+      <!-- Apply Later Queue Section -->
+      <div class="card apply-later-card" id="card-apply-later">
+        <div class="card-header">
+          <div class="card-title-group">
+            <h3 class="card-title">📌 Apply Later Queue</h3>
+            <span class="card-caption">External portal jobs saved for manual application</span>
+          </div>
+          <button class="btn-ghost" id="btn-refresh-queue" onclick="fetchExternalQueue()">🔄 Refresh</button>
+        </div>
+        <div class="table-container">
+          <table class="data-table" id="table-external-queue">
+            <thead>
+              <tr>
+                <th>Job Title</th>
+                <th>Company</th>
+                <th>ATS Score</th>
+                <th>Summary</th>
+                <th>LinkedIn</th>
+                <th>Portal</th>
+                <th>Saved</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-external-queue">
+              <tr><td colspan="7" class="text-center">No external jobs queued yet. Run a session to discover external portal jobs.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: ATS RESUME OPTIMIZER STUDIO -->
+    <section class="tab-pane" id="pane-ats">
+      <div class="card ats-studio-card">
+        <div class="card-header">
+          <div class="card-title-group">
+            <h2 class="card-title">ATS Resume Matcher & AI Tailoring Studio</h2>
+            <span class="card-caption">Calculate keyword match scores, identify ATS gaps, and compile tailored STAR bullets</span>
+          </div>
+        </div>
+
+        <div class="ats-studio-grid">
+          <!-- Left: Input Form -->
+          <div class="ats-form-col">
+            <div class="form-group">
+              <label class="form-label" for="ats-resume-select">Select Candidate Resume</label>
+              <select class="form-control" id="ats-resume-select">
+                <option value="">Auto-detect from resumes/ folder</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="ats-jd-text">Paste Target Job Description (or use sample)</label>
+              <textarea class="form-control code-font" id="ats-jd-text" rows="10" placeholder="Paste full Job Description text here..."></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button class="btn-primary" id="btn-run-ats" onclick="runAtsStudioMatch(false)">
+                🎯 Calculate ATS Match
+              </button>
+              <button class="btn-accent" id="btn-run-tailor" onclick="runAtsStudioMatch(true)">
+                ✨ Generate Tailored Resume + PDF
+              </button>
+              <button class="btn-ghost" onclick="loadSampleJd()">Load Sample JD</button>
+            </div>
+          </div>
+
+          <!-- Right: Output Panel -->
+          <div class="ats-results-col" id="ats-results-col">
+            <div class="empty-state" id="ats-empty-state">
+              <span class="empty-icon">📊</span>
+              <p class="empty-title">Ready to Analyze</p>
+              <p class="empty-desc">Select your resume, paste a JD, and click Calculate to view keyword overlaps.</p>
+            </div>
+
+            <div class="ats-output-content hidden" id="ats-output-content">
+              <div class="ats-score-hero">
+                <div class="hero-score-ring">
+                  <span class="hero-score-num" id="ats-res-score">--%</span>
+                </div>
+                <div>
+                  <h3 class="hero-score-title" id="ats-res-status">ATS Evaluation</h3>
+                  <p class="hero-score-desc" id="ats-res-summary">Keyword alignment analysis</p>
+                </div>
+              </div>
+
+              <div class="ats-chip-block">
+                <h4 class="chip-block-title">✅ Matched Keywords (<span id="ats-matched-count">0</span>)</h4>
+                <div class="chip-container" id="ats-matched-list"></div>
+              </div>
+
+              <div class="ats-chip-block">
+                <h4 class="chip-block-title">⚠️ Missing ATS Keywords (<span id="ats-missing-count">0</span>)</h4>
+                <div class="chip-container" id="ats-missing-list"></div>
+              </div>
+
+              <div class="tailored-actions-block hidden" id="tailored-actions-block">
+                <h4 class="chip-block-title">✨ Generated Tailored Materials</h4>
+                <div class="download-btns">
+                  <a class="btn-success btn-download" id="btn-view-pdf" target="_blank" href="#">
+                    📄 Preview / Download ATS PDF
+                  </a>
+                  <a class="btn-secondary btn-download" id="btn-view-md" target="_blank" href="#">
+                    📝 View Tailored Markdown
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: CHECKPOINTS & THREAD INSPECTOR -->
+    <section class="tab-pane" id="pane-checkpoints">
+      <div class="card checkpoints-card">
+        <div class="card-header">
+          <div class="card-title-group">
+            <h2 class="card-title">LangGraph SQLite Checkpoint Inspector</h2>
+            <span class="card-caption">Time-travel state persistence saved in checkpoints/job_agent.db</span>
+          </div>
+          <button class="btn-ghost" id="btn-refresh-threads" onclick="loadCheckpointThreads()">🔄 Refresh</button>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table" id="table-threads">
+            <thead>
+              <tr>
+                <th>Thread ID</th>
+                <th>Target Role</th>
+                <th>Next Step</th>
+                <th>ATS Score</th>
+                <th>Applications</th>
+                <th>Mode</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-threads">
+              <tr><td colspan="7" class="text-center">Loading checkpoints...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: ANTI-BAN SAFETY INFO -->
+    <section class="tab-pane" id="pane-safety">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Anti-Ban Safeguards & Rate-Limit Shield</h2>
+        </div>
+        <div class="safety-guide-content">
+          <div class="safety-card-banner">
+            <span class="shield-big-icon">🛡️</span>
+            <div>
+              <h3>Account Protection Architecture</h3>
+              <p>Strict controls prevent automated bot detection and maintain session authenticity on LinkedIn and Indeed.</p>
+            </div>
+          </div>
+
+          <div class="rules-grid">
+            <div class="rule-box">
+              <h4>1. Randomized Human Pacing</h4>
+              <p>Every application sleeps between <strong>45 and 90 seconds</strong> before inspecting the next card to simulate human reading and form interaction.</p>
+            </div>
+            <div class="rule-box">
+              <h4>2. Strict Daily Caps</h4>
+              <p>Applications are capped at <strong>40 per day on LinkedIn</strong>. Once reached, execution halts automatically and logs a safety hold.</p>
+            </div>
+            <div class="rule-box">
+              <h4>3. Persistent Cookie Vault</h4>
+              <p>Log in once using Option 3. Your authentication tokens remain stored in <code>browser_profile/</code> so you never trigger new device alerts.</p>
+            </div>
+            <div class="rule-box">
+              <h4>4. Playwright Stealth Evasion</h4>
+              <p>Uses <code>playwright-stealth</code> to spoof navigator properties, disable automation flags, and mimic authentic Chrome viewport signatures.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal: Start New Session -->
+  <div class="modal-overlay hidden" id="modal-start-session">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">🚀 Launch LangGraph Application Batch</h3>
+        <button class="modal-close" onclick="closeStartModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="inp-modal-role">Target Job Role</label>
+          <input type="text" class="form-control" id="inp-modal-role" value="Software Engineer">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="inp-modal-loc">Target City / Country</label>
+          <input type="text" class="form-control" id="inp-modal-loc" value="India" placeholder="e.g. India, Hyderabad, Bangalore">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Workplace Types</label>
+          <div style="display: flex; gap: 16px; margin-top: 6px; padding: 6px 0;">
+            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--text-secondary); font-size: 0.88rem;">
+              <input type="checkbox" id="chk-wt-remote" checked> 🌐 Remote
+            </label>
+            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--text-secondary); font-size: 0.88rem;">
+              <input type="checkbox" id="chk-wt-hybrid" checked> 🏢 Hybrid
+            </label>
+            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--text-secondary); font-size: 0.88rem;">
+              <input type="checkbox" id="chk-wt-onsite" checked> 📍 On-site
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="inp-modal-max">Max Applications in Batch</label>
+          <input type="number" class="form-control" id="inp-modal-max" value="3" min="1" max="10">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="inp-modal-date">Date Posted Filter</label>
+          <select class="form-control" id="inp-modal-date">
+            <option value="past_week" selected>📅 Past 1 Week (Recommended)</option>
+            <option value="past_24h">⚡ Past 24/25 Hours (Freshly Posted)</option>
+            <option value="any">🌐 Any Time</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="inp-modal-mode">Execution Mode</label>
+          <select class="form-control" id="inp-modal-mode">
+            <option value="supervised" selected>Supervised (Human-in-the-Loop review before submitting)</option>
+            <option value="headless">Headless (Fully autonomous autopilot)</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-ghost" onclick="closeStartModal()">Cancel</button>
+        <button class="btn-primary" id="btn-confirm-start" onclick="confirmStartSession()">Start Execution</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

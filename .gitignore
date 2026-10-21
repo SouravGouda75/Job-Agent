@@ -1,0 +1,123 @@
+# ==============================================================================
+# 🛡️ Git Ignore Configuration — Autonomous Job Hunting Agent
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Environment Variables & Secrets (CRITICAL: Never commit API keys or tokens)
+# ------------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+*.pfx
+credentials.json
+client_secret*.json
+
+# ------------------------------------------------------------------------------
+# 2. Browser Profiles & Persistent Sessions (Contains cookies & active logins)
+# ------------------------------------------------------------------------------
+browser_profile/*
+!browser_profile/.gitkeep
+browser_data/
+cookies/
+*.session
+
+# ------------------------------------------------------------------------------
+# 3. LangGraph Checkpoints & SQLite State Databases
+# ------------------------------------------------------------------------------
+checkpoints/*
+!checkpoints/.gitkeep
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# ------------------------------------------------------------------------------
+# 4. Third-Party Cloned Repositories (Cloned reference repositories)
+# ------------------------------------------------------------------------------
+AutoApply/
+Resume-Matcher/
+
+# ------------------------------------------------------------------------------
+# 5. Application Run Logs & Activity Statistics
+# ------------------------------------------------------------------------------
+logs/*
+!logs/.gitkeep
+*.log
+
+# ------------------------------------------------------------------------------
+# 6. Candidate Personal Resumes & Generated Resumes (Preserves Privacy)
+# Retains sample candidate files and .gitkeep
+# ------------------------------------------------------------------------------
+resumes/*
+!resumes/.gitkeep
+!resumes/sample_candidate_resume.*
+tailored_resumes/*
+!tailored_resumes/.gitkeep
+!tailored_resumes/tailored_sample_candidate_resume.*
+
+# ------------------------------------------------------------------------------
+# 7. Python Bytecode, Caches & Virtual Environments
+# ------------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+.venv/
+venv/
+env/
+ENV/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ------------------------------------------------------------------------------
+# 8. Jupyter Notebook Checkpoints
+# ------------------------------------------------------------------------------
+.ipynb_checkpoints/
+
+# ------------------------------------------------------------------------------
+# 9. Operating System & Editor Files
+# ------------------------------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.agent/
+.agents/
+.gemini/
